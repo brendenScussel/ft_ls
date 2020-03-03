@@ -6,72 +6,56 @@
 /*   By: bscussel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 23:33:37 by bscussel          #+#    #+#             */
-/*   Updated: 2020/02/07 19:43:27 by bscussel         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:38:11 by bscussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./ft_ls.h"
 
-void			free_arg(t_vars *v)
-{
-	v->i = 0;
-	while ((int)v->i < v->argc)
-	{
-		(v->argv[v->i] != NULL) ? free(v->argv[v->i]) : 0;
-		v->argv[v->i++] = NULL;
-	}
-	free(v->argv);
-	v->argv = NULL;
-}
+/*
+**	general freeing and exit functions
+*/
 
-int				is_slash(char *str)
+void			fls_free(t_data *fls, int size)
 {
 	int			i;
 
 	i = 0;
-	while (str[i])
-		i++;
-	if (i != 1)
-		return (0);
-	if (str[0] != '/')
-		return (0);
-	if (str[1] != '\0')
-		return (0);
-	return (1);
-}
-
-void			check_flags(t_vars *var, char *arg)
-{
-	arg++;
-	while (*arg)
+	if (fls != NULL)
 	{
-		if (*arg == 'a')
-			var->flag.a = 1;
-		else if (*arg == 'l')
-			var->flag.l = 1;
-		else if (*arg == 'r')
-			var->flag.r = 1;
-		else if (*arg == 't')
-			var->flag.t = 1;
-		else if (*arg == 'R')
-			var->flag.recur = 1;
-		else
+		while (i < size && (fls[i].arg))
 		{
-			ft_printf("ft_ls -%s: Invalid flag\n", arg);
-			exit_ls(var);
+			ft_strdel(&fls[i].arg);
+			ft_strdel(&fls[i].path);
+			ft_strdel(&fls[i].owner);
+			ft_strdel(&fls[i].groupie);
+			i++;
 		}
-		arg++;
+		free(fls);
 	}
+	fls = NULL;
 }
 
-/*
-**	freeing *DIR (despite being malloced within *var
-**	causes 17k leak.
-*/
-
-void			exit_ls(t_vars *var)
+void			free_arg(t_vars *v)
 {
+	v->i = 0;
+	if (v->argv != NULL)
+	{
+		while ((int)v->i < v->d_arg)
+		{
+			ft_strdel(&v->argv[v->i]);
+			v->i++;
+		}
+		free(v->argv);
+	}
+	v->argv = NULL;
+}
+
+void			exit_ls(t_vars *var, char *msg)
+{
+	(msg != NULL) ? ft_putendl(msg) : 0;
 	free_arg(var);
+	ft_strdel(&var->entry);
 	var->dir = NULL;
 	var->dent = NULL;
 	free(var);
