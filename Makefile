@@ -19,11 +19,11 @@ CFLAGS = -Wall -Wextra -Werror
 HEADER = ./ft_ls.h
 
 CFILES = ./ft_ls_main.c \
-		./ft_ls_0.c \
-		./ft_ls_1.c \
-		./ft_ls_2.c \
-		./ft_ls_3.c \
-		./ft_ls_single.c \
+		./ft_ls_0_util.c \
+		./ft_ls_1_read.c \
+		./ft_ls_2_print.c \
+		./ft_ls_3_sort.c \
+		./ft_ls_4_single.c \
 
 LIBFT = ./libft/libft.a
 
