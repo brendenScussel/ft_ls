@@ -6,14 +6,49 @@
 /*   By: bscussel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 23:33:37 by bscussel          #+#    #+#             */
-/*   Updated: 2020/03/02 17:38:11 by bscussel         ###   ########.fr       */
+/*   Updated: 2020/03/08 21:40:10 by bscussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./ft_ls.h"
 
 /*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
+**	remove excessive data from mtime sting
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
+*/
+
+void			edit_mtime(const char *mtime)
+{
+	int			i;
+	int			len;
+
+	i = 4;
+	len = (int)ft_strlen(mtime);
+	while (i < len - 9)
+		write(1, &mtime[i++], 1);
+	write(1, " ", 1);
+}
+
+/*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
+**	swap t_data structures
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
+*/
+
+void			fls_swap(t_data *a, t_data *b)
+{
+	t_data		tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 **	general freeing and exit functions
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 */
 
 void			fls_free(t_data *fls, int size)
@@ -27,8 +62,6 @@ void			fls_free(t_data *fls, int size)
 		{
 			ft_strdel(&fls[i].arg);
 			ft_strdel(&fls[i].path);
-			ft_strdel(&fls[i].owner);
-			ft_strdel(&fls[i].groupie);
 			i++;
 		}
 		free(fls);

@@ -6,7 +6,7 @@
 #    By: bscussel <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/21 22:21:43 by bscussel          #+#    #+#              #
-#    Updated: 2020/03/02 17:33:40 by bscussel         ###   ########.fr        #
+#    Updated: 2020/03/07 03:46:57 by bscussel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = ft_ls
 
 CC = gcc
 
-CFLAGS = -O2 -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 HEADER = ./ft_ls.h
 
@@ -23,6 +23,7 @@ CFILES = ./ft_ls_main.c \
 		./ft_ls_1.c \
 		./ft_ls_2.c \
 		./ft_ls_3.c \
+		./ft_ls_single.c \
 
 LIBFT = ./libft/libft.a
 

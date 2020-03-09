@@ -6,7 +6,7 @@
 /*   By: bscussel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 22:29:19 by bscussel          #+#    #+#             */
-/*   Updated: 2020/03/02 17:36:30 by bscussel         ###   ########.fr       */
+/*   Updated: 2020/03/09 03:35:39 by bscussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
 # include <time.h>
 # include <grp.h>
 # include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/xattr.h>
 
 # define BA "(bad access)"
 # define SE "STAT ERROR..."
 # define NOPE "no such file or directory..."
 # define DIR_EXIT "cannot open directory...\nstopping..."
 # define SUB_EXIT "cannot open subdirectory...\nstopping..."
-# define USAGE "usage: [-alrtR] [file ...]"
+# define USAGE "usage: [-alrtFR] [file ...]"
+# define PADDING "                         "
 
 /*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 **	current file name
 **	path to file
 **	stat buffer of the current file
@@ -38,6 +38,7 @@
 **	time buffer
 **	is the file hidden
 **	is the file a directory?
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 */
 
 typedef struct				s_data
@@ -45,9 +46,6 @@ typedef struct				s_data
 	char					*arg;
 	char					*path;
 	struct stat				stats;
-	char					*owner;
-	char					*groupie;
-	time_t					f_time;
 	int						hidden;
 	int						isdir;
 }							t_data;
@@ -58,10 +56,12 @@ typedef struct				s_flag
 	int						l;
 	int						r;
 	int						t;
+	int						f;
 	int						recur;
 }							t_flag;
 
 /*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 **	DIR *dir - current directory
 **	dirent *dent - information from said directory
 **	total number of directory (not flag) arguements
@@ -73,6 +73,8 @@ typedef struct				s_flag
 **	flags from arguement
 **	variable 'i' becauce line limits
 **	size of directory, because line limits
+**	blocks used for each directory item.
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 */
 
 typedef struct				s_vars
@@ -88,6 +90,7 @@ typedef struct				s_vars
 	t_flag					flag;
 	unsigned int			i;
 	unsigned int			size;
+	unsigned int			dir_blocks;
 }							t_vars;
 
 void						exit_ls(t_vars *var, char *msg);
@@ -99,9 +102,17 @@ void						fls_free(t_data *fls, int size);
 void						o_dir(t_vars *v);
 int							c_dir(t_vars *var, const char *path);
 void						r_dir(t_vars *var, t_data *fls);
+void						p_dir(t_flag flag, t_data *fls, int size);
 void						o_sub(t_vars *var, char *fls_path, char *fl);
 
 void						ls_print_cntrl(t_vars *var, t_data *fls, int size);
 void						ls_sort(t_flag flag, t_data *fls, int size);
+void						fls_swap(t_data *a, t_data *b);
+void						long_p(t_data fls, t_flag flag);
+
+void						is_real(const char *arg, t_flag flg);
+void						edit_mtime(const char *mtime);
+void						p_arg(t_data fls, const char *arg,
+		t_flag flag, int nl);
 
 #endif

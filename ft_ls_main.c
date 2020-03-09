@@ -6,7 +6,7 @@
 /*   By: bscussel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/25 20:54:05 by bscussel          #+#    #+#             */
-/*   Updated: 2020/03/02 00:30:44 by bscussel         ###   ########.fr       */
+/*   Updated: 2020/03/07 23:28:08 by bscussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void			check_flags(t_vars *var, char *arg)
 			var->flag.t = 1;
 		else if (*arg == 'R')
 			var->flag.recur = 1;
+		else if (*arg == 'F')
+			var->flag.f = 1;
 		else
 		{
 			ft_printf("ft_ls -%s: Invalid flag\n%s\n", arg, USAGE);
@@ -57,6 +59,7 @@ void			check_flags(t_vars *var, char *arg)
 }
 
 /*
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 **	parse the given arguements
 **	if '-' is present, a flag is assumed and searched
 **		invalid flags will result in termination of program
@@ -64,6 +67,7 @@ void			check_flags(t_vars *var, char *arg)
 **		validity is checked later, and the path is ignored if not valid
 **	no flags results in flag.none being true
 **	likewise, if flag.none is true, the arguement variable is NULL
+**	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 */
 
 void			find_arg(t_vars *v, char **av)
@@ -102,6 +106,7 @@ int				main(int ac, char **av)
 	var->argv = (ac > 1) ? (char **)malloc(sizeof(char *) * ac) : NULL;
 	var->entry = NULL;
 	var->size = 0;
+	var->dir_blocks = 0;
 	find_arg(var, av);
 	exit_ls(var, NULL);
 	return (0);
