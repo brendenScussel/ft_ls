@@ -33,11 +33,8 @@
 **	current file name
 **	path to file
 **	stat buffer of the current file
-**	owner name
-**	group name
-**	time buffer
 **	is the file hidden
-**	is the file a directory?
+**	is the file a directory
 **	==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==__==
 */
 
